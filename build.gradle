@@ -26,7 +26,7 @@ subprojects {
 
     // Basic project information
     group = "io.github.mywarp.mywarp"
-    version = "3.0-SNAPSHOT"
+    version = "3.0-MCME-build"
 
     // Extended project information
     ext.projectName = "MyWarp"
@@ -35,7 +35,7 @@ subprojects {
     ext.url = "https://mywarp.github.io/"
     ext.projectDescription = "Social and self managing warps for the Minecraft multiplayer."
 
-    ext.internalVersion = version + "+" + ciSystem + "-b" + buildNumber + ".git-" + commitHash
+    ext.internalVersion = version + "-1"
 
     // Minimum version of Java required
     sourceCompatibility = 8
@@ -54,7 +54,7 @@ subprojects {
 
     // JAR manifest configuration
     jar.manifest.mainAttributes(
-            "Built-By": System.properties["user.name"],
+            "Built-By": "Eriol_Eandur",
             "Created-By": System.properties["java.vm.version"] + " (" + System.properties["java.vm.vendor"] + ")",
             "Implementation-Title": name,
             "Implementation-Version": internalVersion,

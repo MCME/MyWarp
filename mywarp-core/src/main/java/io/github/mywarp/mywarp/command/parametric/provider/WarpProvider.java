@@ -22,6 +22,7 @@ package io.github.mywarp.mywarp.command.parametric.provider;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import com.google.common.collect.Lists;
+import com.mcmiddleearth.warp.MCMEWarpUtil;
 import com.sk89q.intake.argument.CommandArgs;
 import com.sk89q.intake.argument.MissingArgumentException;
 import com.sk89q.intake.argument.Namespace;
@@ -77,16 +78,28 @@ abstract class WarpProvider implements Provider<Warp> {
   public Warp get(CommandArgs arguments, List<? extends Annotation> modifiers)
       throws MissingArgumentException, NoSuchWarpException {
     String query = arguments.next();
+    if(query.equalsIgnoreCase("random")) {
+//Logger.getGlobal().info("random warp");
+        Warp random = MCMEWarpUtil.getRandomWarp(warpManager.getAll(isValid(arguments.getNamespace())));
+        if(random == null) {
+            throw new NoSuchWarpException("random", null);
+        }
+        return random;
+    } else {
+        while(arguments.hasNext()) {
+            query = query + " " + arguments.next();
+        } 
 
-    Matches<Warp>
-        matches = Matches.from(warpManager.getAll(isValid(arguments.getNamespace()))).withStringFunction(Warp::getName)
-            .withValueComparator(new Warp.PopularityComparator()).forQuery(query);
-    Optional<Warp> exactMatch = matches.getExactMatch();
+        Matches<Warp>
+            matches = Matches.from(warpManager.getAll(isValid(arguments.getNamespace()))).withStringFunction(Warp::getName)
+                .withValueComparator(new Warp.PopularityComparator()).forQuery(query);
+        Optional<Warp> exactMatch = matches.getExactMatch();
 
-    if (!exactMatch.isPresent()) {
-      throw new NoSuchWarpException(query, matches.getSortedMatches());
-    }
-    return exactMatch.get();
+        if (!exactMatch.isPresent()) {
+          throw new NoSuchWarpException(query, matches.getSortedMatches());
+        }
+        return exactMatch.get();
+      }
   }
 
   @Override

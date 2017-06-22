@@ -52,7 +52,11 @@ class WarpNameProvider extends NonSuggestiveProvider<String> {
   @Override
   public String get(CommandArgs arguments, List<? extends Annotation> modifiers)
       throws ArgumentException, ProvisionException {
-    final String name = arguments.next();
+    String name = arguments.next();
+    String subCmd = name;
+    while(arguments.hasNext()) {
+        name = name + " " + arguments.next();
+    }
 
     if (existsSameNameWarp(name, settings.isCaseSensitiveWarpNames())) {
       throw new InvalidWarpNameException(name, InvalidWarpNameException.Reason.ALREADY_EXISTS);
@@ -60,7 +64,7 @@ class WarpNameProvider extends NonSuggestiveProvider<String> {
     if (name.length() > WarpUtils.MAX_NAME_LENGTH) {
       throw new InvalidWarpNameException(name, InvalidWarpNameException.Reason.TOO_LONG);
     }
-    if (commandHandler.isSubCommand(name)) {
+    if (commandHandler.isSubCommand(subCmd)) {
       throw new InvalidWarpNameException(name, InvalidWarpNameException.Reason.IS_CMD);
     }
 
