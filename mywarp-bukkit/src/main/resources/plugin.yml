@@ -7,6 +7,7 @@ authors:
   - spathizilla
   - mung3r
   - thee
+load: POSTWORLD
 softdepend:
   - dynmap
   - bPermissions

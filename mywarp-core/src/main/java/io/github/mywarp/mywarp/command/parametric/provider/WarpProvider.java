@@ -82,7 +82,8 @@ abstract class WarpProvider implements Provider<Warp> {
 //Logger.getGlobal().info("random warp");
         Warp random = MCMEWarpUtil.getRandomWarp(warpManager.getAll(isValid(arguments.getNamespace())));
         if(random == null) {
-            throw new NoSuchWarpException("random", null);
+            throw new NoSuchWarpException("random", Matches.from(warpManager.getAll(isValid(arguments.getNamespace()))).withStringFunction(Warp::getName)
+                .withValueComparator(new Warp.PopularityComparator()).forQuery(query).getSortedMatches());
         }
         return random;
     } else {

@@ -20,6 +20,7 @@
 package io.github.mywarp.mywarp;
 
 import com.google.common.eventbus.EventBus;
+import com.mcmiddleearth.warp.MCMEWarpUtil;
 
 import io.github.mywarp.mywarp.command.CommandHandler;
 import io.github.mywarp.mywarp.platform.Game;
@@ -101,6 +102,8 @@ public final class MyWarp {
    */
   public static MyWarp initialize(Platform platform) throws StorageInitializationException, SQLException {
 
+    MCMEWarpUtil.init(platform);
+      
     ConnectionConfiguration connectionConfiguration = platform.getSettings().getRelationalStorageConfiguration();
     RelationalDataService dataService = platform.createDataService(connectionConfiguration);
     WarpStorage warpStorage;

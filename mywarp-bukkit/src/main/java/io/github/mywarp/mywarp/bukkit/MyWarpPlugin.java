@@ -23,6 +23,7 @@ import static com.google.common.base.Preconditions.checkState;
 
 import com.flowpowered.math.vector.Vector3i;
 import com.google.common.primitives.Ints;
+import com.mcmiddleearth.warp.MCMEWarpUtil;
 
 import io.github.mywarp.mywarp.MyWarp;
 import io.github.mywarp.mywarp.bukkit.settings.BukkitSettings;
@@ -318,11 +319,12 @@ public final class MyWarpPlugin extends JavaPlugin {
    */
   void unregister() {
     HandlerList.unregisterAll(this);
-    BukkitPermissionsRegistration.INSTANCE.unregisterAll();
 
     if (marker != null) {
       marker.clear();
     }
+    
+    BukkitPermissionsRegistration.INSTANCE.unregisterAll();
   }
 
   /**
