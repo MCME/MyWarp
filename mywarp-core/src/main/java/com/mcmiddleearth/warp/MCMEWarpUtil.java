@@ -57,7 +57,9 @@ public class MCMEWarpUtil {
                     if(config.exists() && config.canWrite()) {
                         try(PrintWriter fw = new PrintWriter(new FileWriter(config))) {
                             fw.println("world");
+                            randomWarpWorlds.add("world");
                             fw.println("moria");
+                            randomWarpWorlds.add("moria");
                             fw.close();
                         }
                     }
