@@ -138,7 +138,7 @@ public class DynmapMarker {
    */
   public void deleteMarker(Iterable<Warp> warps) {
     for (Warp warp : warps) {
-      getMarker(warp).ifPresent(GenericMarker::deleteMarker);
+      getMarker(warp).ifPresent(Marker::deleteMarker);
     }
   }
 
@@ -186,7 +186,7 @@ public class DynmapMarker {
     Optional<Marker> markerOptional = getMarker(warp);
 
     if (!filter.test(warp)) {
-      markerOptional.ifPresent(GenericMarker::deleteMarker);
+      markerOptional.ifPresent(Marker::deleteMarker);
       return;
     }
 
@@ -278,9 +278,9 @@ public class DynmapMarker {
    * @throws IllegalStateException if Dynmap fails to create the {@code Marker}
    */
   private Marker createMarker(Warp warp) {
-    /*if (!filter.test(warp)) {
+    if (!filter.test(warp)) {
       return null;
-    }*/
+    }
     Optional<LocalWorld> worldOptional = game.getWorld(warp.getWorldIdentifier());
     if (!worldOptional.isPresent()) {
       log.debug("The world of the warp {} is not loaded. The warp is ignored.", warp);
