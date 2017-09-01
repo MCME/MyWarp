@@ -278,9 +278,9 @@ public class DynmapMarker {
    * @throws IllegalStateException if Dynmap fails to create the {@code Marker}
    */
   private Marker createMarker(Warp warp) {
-    if (!filter.test(warp)) {
+    /*if (!filter.test(warp)) {
       return null;
-    }
+    }*/
     Optional<LocalWorld> worldOptional = game.getWorld(warp.getWorldIdentifier());
     if (!worldOptional.isPresent()) {
       log.debug("The world of the warp {} is not loaded. The warp is ignored.", warp);
