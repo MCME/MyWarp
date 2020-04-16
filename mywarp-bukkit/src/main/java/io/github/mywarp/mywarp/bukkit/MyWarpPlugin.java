@@ -23,7 +23,6 @@ import static com.google.common.base.Preconditions.checkState;
 
 import com.flowpowered.math.vector.Vector3i;
 import com.google.common.primitives.Ints;
-import com.mcmiddleearth.warp.MCMEWarpUtil;
 
 import io.github.mywarp.mywarp.MyWarp;
 import io.github.mywarp.mywarp.bukkit.settings.BukkitSettings;
@@ -53,7 +52,6 @@ import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.permissions.Permission;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.dynmap.DynmapCommonAPI;
 import org.slf4j.Logger;
@@ -70,6 +68,8 @@ import java.util.Set;
 import java.util.WeakHashMap;
 
 import javax.annotation.Nullable;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  * The MyWarp plugin singleton when running on Bukkit.
@@ -178,14 +178,23 @@ public final class MyWarpPlugin extends JavaPlugin {
    */
   void notifyWarpAvailability() {
     if (getSettings().isDynmapEnabled()) {
-      Plugin dynmap = getServer().getPluginManager().getPlugin("dynmap");
-      if (dynmap != null && dynmap.isEnabled() && dynmap instanceof DynmapCommonAPI) {
-        marker = new DynmapMarker((DynmapCommonAPI) dynmap, this, platform, w -> w.isType(Warp.Type.PUBLIC));
-        marker.addMarker(myWarp.getWarpManager().getAll(warp -> true));
-        myWarp.getEventBus().register(marker);
-      } else {
-        log.error("Failed to hook into Dynmap. Disabling Dynmap support.");
-      }
+        log.info("Dynmap Enabled");
+        final MyWarpPlugin mywarp = this;
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Plugin dynmap = getServer().getPluginManager().getPlugin("dynmap");
+                if (dynmap != null && dynmap.isEnabled() && dynmap instanceof DynmapCommonAPI) {
+                    log.info("Found Dynmap.");
+                    marker = new DynmapMarker((DynmapCommonAPI) dynmap, mywarp, platform, w -> w.isType(Warp.Type.PUBLIC));
+                    marker.addMarker(myWarp.getWarpManager().getAll(warp -> true));
+                    myWarp.getEventBus().register(marker);
+                    log.info("Marker loaded "+myWarp.getWarpManager().getAll(warp -> true).size());
+                } else {
+                    log.error("Failed to hook into Dynmap. Disabling Dynmap support.");
+                }
+            }
+        }.runTaskLater(mywarp, 600);
     }
   }
 

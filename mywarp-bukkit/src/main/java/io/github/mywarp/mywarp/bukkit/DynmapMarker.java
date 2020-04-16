@@ -138,7 +138,7 @@ public class DynmapMarker {
    */
   public void deleteMarker(Iterable<Warp> warps) {
     for (Warp warp : warps) {
-      getMarker(warp).ifPresent(GenericMarker::deleteMarker);
+      getMarker(warp).ifPresent(Marker::deleteMarker);
     }
   }
 
@@ -186,7 +186,7 @@ public class DynmapMarker {
     Optional<Marker> markerOptional = getMarker(warp);
 
     if (!filter.test(warp)) {
-      markerOptional.ifPresent(GenericMarker::deleteMarker);
+      markerOptional.ifPresent(Marker::deleteMarker);
       return;
     }
 
@@ -292,7 +292,7 @@ public class DynmapMarker {
             .createMarker(identifier(warp), label(warp), true, worldOptional.get().getName(), warp.getPosition().getX(),
                           warp.getPosition().getY(), warp.getPosition().getZ(), getOrCreateIcon(), false);
 
-    Preconditions.checkState(ret != null, "Failed to create Marker for %s, Dynmap returns null.", warp);
+    Preconditions.checkState(ret != null, "Failed to create Marker for " + warp + ", Dynmap returns null.");
 
     return ret;
   }
